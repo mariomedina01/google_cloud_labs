@@ -1,0 +1,19 @@
+-- From the joined table, only consider orders from 2024. Calculate the total revenue for each menu item. In the results, display the menu_id, the item name, the item size, and the total revenue (rounded as only two decimal places). Order results with total revenue in descending order.
+CREATE TEMPORARY TABLE SQL1 AS
+SELECT
+  t.menu_id,
+  t.item_name,
+  t.item_size,
+  ROUND(SUM(t.item_total), 2) AS total_revenue
+FROM
+  `SQL` AS t
+WHERE
+  EXTRACT(YEAR
+  FROM
+    t.order_datetime) = 2024
+GROUP BY
+  t.menu_id,
+  t.item_name,
+  t.item_size
+ORDER BY
+  ROUND(SUM(t.item_total), 2) DESC;

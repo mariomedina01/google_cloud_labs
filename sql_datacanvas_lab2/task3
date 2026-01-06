@@ -1,0 +1,13 @@
+-- Identify the top 10 items by total revenue and include the menu_id, item_nam, item_size, and total_revenue fields.
+
+SELECT
+  menu_id,
+  item_name,
+  item_size,
+  total_revenue
+FROM
+  `SQL 1`
+ORDER BY
+  total_revenue DESC
+LIMIT
+  10;

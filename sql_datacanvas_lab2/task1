@@ -1,0 +1,30 @@
+-- Join these data sources without using * and use descriptive table aliases
+CREATE TEMPORARY TABLE SQL AS
+SELECT
+  ord.order_id,
+  ord.location_id,
+  ord.customer_id,
+  ord.order_datetime,
+  ord.order_completion_datetime,
+  oi.order_item_id,
+  oi.quantity,
+  oi.item_price AS order_item_price,
+  -- Renaming to avoid collision with menu.item_price
+  oi.item_total,
+  m.menu_id,
+  m.company_id,
+  m.item_name,
+  m.item_price AS menu_item_price,
+  -- Renaming to avoid collision with order_item.item_price
+  m.item_description,
+  m.item_size
+FROM
+  `qwiklabs-gcp-04-87d2878d38ba`.`coffee_on_wheels`.`orders` AS ord
+INNER JOIN
+  `qwiklabs-gcp-04-87d2878d38ba`.`coffee_on_wheels`.`order_item` AS oi
+ON
+  ord.order_id = oi.order_id
+INNER JOIN
+  `qwiklabs-gcp-04-87d2878d38ba`.`coffee_on_wheels`.`menu` AS m
+ON
+  oi.menu_id = m.menu_id;

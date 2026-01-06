@@ -1,0 +1,15 @@
+-- Find two items with the same total revenue. Within the results, display the item names, item size, and total revenue. Limit your response to only two items.
+
+SELECT
+  t1.item_name,
+  t1.item_size,
+  t1.total_revenue
+FROM
+  `SQL 1` AS t1
+INNER JOIN
+  `SQL 1` AS t2
+ON
+  t1.total_revenue = t2.total_revenue
+  AND t1.menu_id != t2.menu_id
+LIMIT
+  2;
