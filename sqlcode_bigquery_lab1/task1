@@ -1,0 +1,27 @@
+-- Join the menu table with the order item table, return the menu_id, the item_name, and show the top three highest items and bottom three lowest items by total_revenue.
+-- Format the total revenue column so that there are only two decimal places. Use the ROUND function to do so.
+SELECT
+  menu_id,
+  item_name,
+  total_revenue
+FROM (
+  SELECT
+    menu.menu_id,
+    menu.item_name,
+    ROUND(SUM(order_item.item_total), 2) AS total_revenue,
+    ROW_NUMBER() OVER (ORDER BY SUM(order_item.item_total) DESC) AS rn_desc,
+    ROW_NUMBER() OVER (ORDER BY SUM(order_item.item_total) ASC) AS rn_asc
+  FROM
+    `qwiklabs-gcp-00-3e40df3d4d55`.`coffee_on_wheels`.`menu` AS menu
+  INNER JOIN
+    `qwiklabs-gcp-00-3e40df3d4d55`.`coffee_on_wheels`.`order_item` AS order_item
+  ON
+    menu.menu_id = order_item.menu_id
+  GROUP BY
+    menu.menu_id,
+    menu.item_name )
+WHERE
+  rn_desc <= 3
+  OR rn_asc <= 3
+ORDER BY
+  total_revenue DESC
